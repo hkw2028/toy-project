@@ -50,3 +50,6 @@ next-env.d.ts
 
 # worktree
 .claude/worktrees
+
+# 생성되는 지표 스냅샷
+/data

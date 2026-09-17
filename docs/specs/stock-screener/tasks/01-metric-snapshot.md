@@ -50,10 +50,10 @@ One review pass after this task.
 
 <!-- Current values: `pending`, `in-progress`, `completed`, `blocked`, or
 `superseded`. -->
-pending
+blocked
 
 ## Execution
 
-- Verification: —
-- Blocker: —
-- Revision: —
+- Verification: 순수 함수 계층은 70개 테스트가 통과한다(지표 계산, 백분위·순위, 원천 응답 정규화, 이상치 판정). 기댓값은 롯데쇼핑 2025 원천값을 구현과 별개로 손계산해 고정했다. `bun run typecheck`, `bun run lint`, `bun run test` 모두 통과한다. 실행 증거로 다음 수용 기준을 충족했다. 조작 한 번으로 스냅샷이 만들어지고 확보율이 보고된다. OpenDART 고유번호 연결 2,756/2,756(100%). 금융위 재무·시세 조인 2,577/2,756(93.5%). 인증키가 없거나 잘못되면 어느 원천에서 왜 실패했는지 드러난다(키 누락 2종, 잘못된 키 1종 확인).
+- Blocker: 재무제표 확보율이 30.2%(831/2,756)에 그쳐 95% 기준을 통과하지 못했다. 원인은 계산 오류가 아니라 OpenDART의 IP 단위 차단이다. 동시 8로 2,756종목을 돌리는 중간부터 `Connection reset by peer`가 발생했고, 이후 키 없이 `https://opendart.fss.or.kr/` 홈페이지를 열어도 연결되지 않는다. 대조군인 금융위 API는 정상이므로 네트워크 문제가 아니다. 60초 간격으로 20회 확인했으나 20분 동안 풀리지 않았다. 필요한 선행 조건은 차단 해제다. 해제되면 `bun run universe`를 다시 실행해 재무제표 확보율 95% 이상과 지표 완성 1,250종목 이상, 그리고 롯데쇼핑 손계산 대조를 확인해야 한다.
+- Revision: 차단 대응을 구현에 반영했다. 요청 간 최소 간격 150ms, 동시 실행 8에서 2로 축소, 연결 끊김 시 지수 백오프로 3회 재시도, 연속 10회 실패 시 `DartBlockedError`로 조기 중단한다. 받아 둔 재무제표는 `data/statements-<연도>.json`에 남겨 다시 실행할 때 남은 종목부터 이어받는다. 스펙의 가정 중 "종목 단위 조회를 병렬로 보내도 차단되지 않는다"는 실측으로 반증되어 관측 내용으로 고쳐 적었다. 수용 기준은 바뀌지 않았다.
