@@ -75,15 +75,18 @@ export async function findLatestBasDt(
   maxDaysBack = 14,
 ): Promise<string> {
   const today = new Date();
+  let lastFailure = "";
   for (let back = 0; back <= maxDaysBack; back++) {
     const d = new Date(today);
     d.setDate(d.getDate() - back);
     const basDt = d.toISOString().slice(0, 10).replace(/-/g, "");
     const r = await fetchFsc(endpoint, { basDt, numOfRows: 1, pageNo: 1 }, key);
     if (r.ok && r.totalCount > 0) return basDt;
+    if (!r.ok) lastFailure = `[${r.code}] ${r.reason}`;
   }
   throw new Error(
-    `최근 ${maxDaysBack}일 안에 데이터가 있는 기준일을 찾지 못했습니다: ${endpoint}`,
+    `최근 ${maxDaysBack}일 안에 데이터가 있는 기준일을 찾지 못했습니다: ${endpoint}` +
+      (lastFailure ? ` (마지막 실패: ${lastFailure})` : ""),
   );
 }
 
