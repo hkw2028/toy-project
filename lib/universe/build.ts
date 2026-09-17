@@ -5,7 +5,7 @@ import {
   readDartKey,
   type FinancialStatementBasis,
 } from "@/lib/dart/client";
-import { pickAccounts } from "@/lib/dart/response";
+import { pickAccounts, type DartAccountRow } from "@/lib/dart/response";
 import {
   FSC_ENDPOINT,
   fetchFsc,
@@ -92,10 +92,15 @@ export type Snapshot = {
 
 export type Progress = (message: string) => void;
 
-/** 이미 받아 둔 종목별 재무제표. 다시 실행할 때 남은 종목부터 이어받는다. */
+/**
+ * 이미 받아 둔 종목별 재무제표.
+ *
+ * 계정을 뽑아낸 결과가 아니라 원본 계정 목록을 저장한다. 지표 계산 방식이
+ * 바뀌어도 다시 받지 않고 캐시에서 새로 뽑아낼 수 있어야 하기 때문이다.
+ */
 export type StatementCache = Map<
   string,
-  { basis: FinancialStatementBasis; accounts: ReturnType<typeof pickAccounts> }
+  { basis: FinancialStatementBasis; list: DartAccountRow[] }
 >;
 
 /**
@@ -204,7 +209,7 @@ export async function buildSnapshot(
         const r = await fetchStatements(corpCode, bizYear, basis, dartKey);
         if (r.ok) {
           consecutiveNetworkFailures = 0;
-          const entry = { basis, accounts: pickAccounts(r.list) };
+          const entry = { basis, list: r.list };
           cache.set(corpCode, entry);
           return entry;
         }
@@ -258,7 +263,7 @@ export async function buildSnapshot(
         summary,
         balance: balanceByCrno.get(crno) ?? [],
         previous: pickPreferredStatement(prevByCrno.get(crno) ?? []),
-        accounts: stmt?.accounts ?? null,
+        accounts: stmt ? pickAccounts(stmt.list) : null,
         dartBasis: stmt?.basis ?? null,
       }),
     );
