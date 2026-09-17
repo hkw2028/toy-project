@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 외부에서 가져온 스킬 내용. 이 프로젝트가 규칙을 강제할 대상이 아니다.
+    ".claude/skills/**",
+    ".agents/skills/**",
+    // 생성되는 지표 스냅샷.
+    "data/**",
   ]),
 ]);
 
