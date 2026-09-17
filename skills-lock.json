@@ -1,11 +1,23 @@
 {
   "version": 1,
   "skills": {
+    "3-statement-model": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/3-statement-model/SKILL.md",
+      "computedHash": "1bf9f28bb52c29f8bb976d5bcba88910307983866424d43ff209b9c305eea9c8"
+    },
     "add-stack-context": {
       "source": "toy-crane/skills",
       "sourceType": "github",
       "skillPath": "skills/workflow/add-stack-context/SKILL.md",
       "computedHash": "963265a45b37e496cb9e308a563f1940d5841e2cda54142d2bea3f6b59325dbd"
+    },
+    "audit-xls": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/audit-xls/SKILL.md",
+      "computedHash": "890ac2385d133a0fe7f11bf7dc0b6ebe4a844fdbe2eccdecb1d863b298517584"
     },
     "babysit-specs": {
       "source": "toy-crane/skills",
@@ -19,11 +31,47 @@
       "skillPath": "skills/workflow/build-prototype/SKILL.md",
       "computedHash": "ef34e8f19f5ff2759ad0958377705b99d632f6714cb45d3b9e79f3a3b94d6066"
     },
+    "catalyst-calendar": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/catalyst-calendar/SKILL.md",
+      "computedHash": "2a0eb640f32537406366f5971927bf4424e84f86509a5cda32adcd7efb799397"
+    },
+    "clean-data-xls": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/clean-data-xls/SKILL.md",
+      "computedHash": "a8cd312f1c7d91022f61f1a3be8c0e82d04d63c584e681bd934f36a679c139b6"
+    },
     "commit": {
       "source": "toy-crane/skills",
       "sourceType": "github",
       "skillPath": "skills/git/commit/SKILL.md",
       "computedHash": "f75ca87a7d4838eea1e649180ea9b275ba4e8d31df4e6ff33558e5b426eae67a"
+    },
+    "competitive-analysis": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/competitive-analysis/SKILL.md",
+      "computedHash": "14cf7f97a5f70a7c18c4f984de9301d446c23eb1f25f9e66add2025b4a65a30f"
+    },
+    "comps-analysis": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/comps-analysis/SKILL.md",
+      "computedHash": "0e0c5e94e64e20d734874daf2afab71dfcb7e48f2064d34146e09128f1de6fdd"
+    },
+    "dcf-model": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/dcf-model/SKILL.md",
+      "computedHash": "5ec4336850cc7cf2c93932d7163bdb273d2f3ffadcaa216cb90361fe8d2f217f"
+    },
+    "deck-refresh": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/deck-refresh/SKILL.md",
+      "computedHash": "77c6ea935b75eeb50db6663a9b9e2217cc5f2b2342be38e3f59fb82ce79b7e8c"
     },
     "define-piece": {
       "source": "toy-crane/skills",
@@ -49,6 +97,18 @@
       "skillPath": "skills/writing/draft-piece/SKILL.md",
       "computedHash": "742ee95db555d2b0270a66dea3bee754181c7b6a57793199dba28025d68ca047"
     },
+    "earnings-analysis": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/earnings-analysis/SKILL.md",
+      "computedHash": "57da904968b9c28d0538f0876078601e662aa12932aeffda45391cd832eb5dcd"
+    },
+    "earnings-preview": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/earnings-preview/SKILL.md",
+      "computedHash": "822d1cd70d4e79b928795f6a5e213e5c3435858cfd28c40f7fff2997b4d3cb2e"
+    },
     "explain-visually": {
       "source": "toy-crane/skills",
       "sourceType": "github",
@@ -67,11 +127,35 @@
       "skillPath": "skills/workflow/human-review/SKILL.md",
       "computedHash": "ab21c961cd9f78ad5704fab8091a85bb1eae68ab17507335b0063f5efec84883"
     },
+    "ib-check-deck": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/ib-check-deck/SKILL.md",
+      "computedHash": "a6eac58eb22f971aa8ef5af8cd618f911cbb2872f5da1964d50a5a5ee77fe35b"
+    },
+    "idea-generation": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/idea-generation/SKILL.md",
+      "computedHash": "aec2ba80c097b95c9b8b6cee1866d223daec62fd6ec037e899dc7c9e6048d337"
+    },
     "implement": {
       "source": "toy-crane/skills",
       "sourceType": "github",
       "skillPath": "skills/workflow/implement/SKILL.md",
       "computedHash": "90c659fdfdbf272a9a56f1fdc2467c86533162ffb3ea34141735782374378962"
+    },
+    "initiating-coverage": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/initiating-coverage/SKILL.md",
+      "computedHash": "a7b412545b16145a5b2ebdb14bc16086c8a33143fa58abdfba2955c995135074"
+    },
+    "lbo-model": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/lbo-model/SKILL.md",
+      "computedHash": "7c98e2a35b2ff33a9b7d715ddffcabce9be695ed406dd436bf2eb3d3971c7c8d"
     },
     "maintain-project-context": {
       "source": "toy-crane/skills",
@@ -85,11 +169,35 @@
       "skillPath": "skills/git/merge/SKILL.md",
       "computedHash": "aed98a4d97d663dfbb1ce1c8cb30e88d3571d812864f2ae016a21935fb51e227"
     },
+    "model-update": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/model-update/SKILL.md",
+      "computedHash": "af3e7cd79dadf29d7d682d6d78cca5bf8310c86ead9d06abdecc251f4f0af0ed"
+    },
+    "morning-note": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/morning-note/SKILL.md",
+      "computedHash": "20b2f8f56e5e60e44a6638d6967cfb7a5ddebee582405abaab0b5e154fb2515f"
+    },
     "next-dev-loop": {
       "source": "vercel/next.js",
       "sourceType": "github",
       "skillPath": "skills/next-dev-loop/SKILL.md",
       "computedHash": "d604c9440a736b08836fe782e8c0bf6a596d00c4e20e3e245e4a4394efbf74f4"
+    },
+    "ppt-template-creator": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/ppt-template-creator/SKILL.md",
+      "computedHash": "4bf6e49b5a539c04f26d99ca82e1d0d9203927dc3f499b5d3b09a3a616eb655a"
+    },
+    "pptx-author": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/pptx-author/SKILL.md",
+      "computedHash": "4d0afa02319170344aec499dd69c852e198998ec914ce82120a3e1a1178759cd"
     },
     "pr": {
       "source": "toy-crane/skills",
@@ -121,6 +229,12 @@
       "skillPath": "skills/workflow/resolve-follow-ups/SKILL.md",
       "computedHash": "45b768dd4b7ace140c6df65e0e1986a6c7acba113900dd6e5881682f0774ab3b"
     },
+    "sector-overview": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/sector-overview/SKILL.md",
+      "computedHash": "1eefbf303f6045e69dc65f4eb1df28aeb69305dedeaa444570b0f575df95c2f0"
+    },
     "shadcn": {
       "source": "shadcn-ui/ui",
       "sourceType": "github",
@@ -132,6 +246,12 @@
       "sourceType": "github",
       "skillPath": "skills/workflow/shape-idea/SKILL.md",
       "computedHash": "4aef1291843f652a73997645a2857f92947b95eb85bca05257ae3487003ba113"
+    },
+    "skill-creator": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/skill-creator/SKILL.md",
+      "computedHash": "272d984e884ac4eddca9c78730d2bdd60c0c14864ca35e166fed89553d7f9c97"
     },
     "split-into-tasks": {
       "source": "toy-crane/skills",
@@ -145,11 +265,23 @@
       "skillPath": "skills/workflow/tdd/SKILL.md",
       "computedHash": "e5b532fc5fa32e9459c5856eaf39fce076963cee4b2b86987dfb30cca3710843"
     },
+    "thesis-tracker": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/equity-research/skills/thesis-tracker/SKILL.md",
+      "computedHash": "da5c02de051d41f1120918f482ef34def6b1dd96cd04668778478bf43fd12e00"
+    },
     "update-project-skills": {
       "source": "toy-crane/skills",
       "sourceType": "github",
       "skillPath": "skills/workflow/update-project-skills/SKILL.md",
       "computedHash": "d32afd997c10adf6707b80ab0ee30c37638dc53b5f728dd539ce5ff058c0a432"
+    },
+    "xlsx-author": {
+      "source": "anthropics/financial-services",
+      "sourceType": "github",
+      "skillPath": "plugins/vertical-plugins/financial-analysis/skills/xlsx-author/SKILL.md",
+      "computedHash": "98b55e4a1b56dde97c99b1a3fa90b53bf51c4dc091efedd0f8289f73e66571b3"
     }
   }
 }
