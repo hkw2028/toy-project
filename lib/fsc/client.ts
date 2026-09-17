@@ -64,6 +64,30 @@ export async function fetchFsc<T>(
 }
 
 /**
+ * 오늘부터 거슬러 올라가며 데이터가 있는 가장 최근 기준일을 찾는다.
+ *
+ * 시세·상장종목 계열 API는 매일 갱신되지만 휴장일에는 그날 데이터가 없다.
+ * 스냅샷 생성과 기업 검색 양쪽에서 똑같이 필요해 여기 한 곳에 둔다.
+ */
+export async function findLatestBasDt(
+  endpoint: string,
+  key: string,
+  maxDaysBack = 14,
+): Promise<string> {
+  const today = new Date();
+  for (let back = 0; back <= maxDaysBack; back++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - back);
+    const basDt = d.toISOString().slice(0, 10).replace(/-/g, "");
+    const r = await fetchFsc(endpoint, { basDt, numOfRows: 1, pageNo: 1 }, key);
+    if (r.ok && r.totalCount > 0) return basDt;
+  }
+  throw new Error(
+    `최근 ${maxDaysBack}일 안에 데이터가 있는 기준일을 찾지 못했습니다: ${endpoint}`,
+  );
+}
+
+/**
  * 10,000건 단위로 나뉘는 목록을 끝까지 받는다.
  *
  * 원천이 한 번에 최대 10,000건까지만 돌려주므로 전체 건수를 보고 이어 받는다.

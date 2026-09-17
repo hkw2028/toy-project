@@ -8,8 +8,8 @@ import {
 import { pickAccounts, type DartAccountRow } from "@/lib/dart/response";
 import {
   FSC_ENDPOINT,
-  fetchFsc,
   fetchFscAllPages,
+  findLatestBasDt,
   readFscKey,
 } from "@/lib/fsc/client";
 import {
@@ -525,25 +525,6 @@ function dedupeLatest<T extends { basDt?: string }>(
     if (latest) out.push(latest);
   }
   return out;
-}
-
-/** 오늘부터 거슬러 올라가며 데이터가 있는 가장 최근 기준일을 찾는다. */
-async function findLatestBasDt(
-  endpoint: string,
-  key: string,
-  maxDaysBack = 14,
-): Promise<string> {
-  const today = new Date();
-  for (let back = 0; back <= maxDaysBack; back++) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - back);
-    const basDt = d.toISOString().slice(0, 10).replace(/-/g, "");
-    const r = await fetchFsc(endpoint, { basDt, numOfRows: 1, pageNo: 1 }, key);
-    if (r.ok && r.totalCount > 0) return basDt;
-  }
-  throw new Error(
-    `최근 ${maxDaysBack}일 안에 데이터가 있는 기준일을 찾지 못했습니다: ${endpoint}`,
-  );
 }
 
 async function fetchAllOrThrow<T>(

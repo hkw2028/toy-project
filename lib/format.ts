@@ -22,6 +22,11 @@ export function formatPercent(ratio: number, digits = 1): string {
   return `${(ratio * 100).toFixed(digits)}%`;
 }
 
+/** 124.77 처럼 원천에서 이미 %로 오는 값(예: 부채비율)을 그대로 보여준다. */
+export function formatRawPercent(value: number, digits = 1): string {
+  return `${value.toFixed(digits)}%`;
+}
+
 /** 45.6 같은 배율을 "45.6배"로 보여준다. */
 export function formatMultiple(value: number, digits = 1): string {
   return `${value.toFixed(digits)}배`;
