@@ -9,10 +9,20 @@ const TAB_QUERY_KEY = "tab";
 const TABS = ["screener", "compare"] as const;
 type TabValue = (typeof TABS)[number];
 
+/**
+ * `tab`이 없어도, 기업 비교 전용 쿼리(`q`, `basket`)가 있으면 그 탭을 연
+ * 것으로 본다. 탭이 생기기 전의 링크나 비교 파라미터만 든 URL도 올바른
+ * 화면으로 재현돼야 하기 때문이다(스크리너는 이 두 쿼리 키를 쓰지 않는다).
+ */
 function parseTab(searchParams: RawSearchParams): TabValue {
   const raw = searchParams[TAB_QUERY_KEY];
   const value = Array.isArray(raw) ? raw[0] : raw;
-  return TABS.includes(value as TabValue) ? (value as TabValue) : "screener";
+  if (TABS.includes(value as TabValue)) return value as TabValue;
+
+  if (searchParams.q !== undefined || searchParams.basket !== undefined) {
+    return "compare";
+  }
+  return "screener";
 }
 
 /** 탭 전환 링크. 다른 쿼리(규칙, 검색어, 바구니 등)는 그대로 들고 넘어간다. */
