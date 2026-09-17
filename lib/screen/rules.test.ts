@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { applyRules, parseRules, summarizeExclusions } from "@/lib/screen/rules";
+import {
+  applyRules,
+  capResults,
+  parseRules,
+  summarizeExclusions,
+} from "@/lib/screen/rules";
 import type { SnapshotItem } from "@/lib/universe/build";
 
 describe("parseRules", () => {
@@ -100,7 +105,7 @@ describe("applyRules", () => {
 
     const r = applyRules([통과, ev탈락, roic탈락], rules);
 
-    expect(r.passed.map((x) => x.stockCode)).toEqual(["A"]);
+    expect(r.matched.map((x) => x.stockCode)).toEqual(["A"]);
   });
 
   it("모집단은 지표가 계산된(percentile 있는) 종목 수다", () => {
@@ -112,31 +117,37 @@ describe("applyRules", () => {
     expect(r.population).toBe(1);
   });
 
-  it("순위가 낮은(좋은) 순으로 정렬한다", () => {
-    const 순위3 = item({ stockCode: "C", rank: 3 });
-    const 순위1 = item({ stockCode: "A", rank: 1 });
-    const 순위2 = item({ stockCode: "B", rank: 2 });
-
-    const r = applyRules([순위3, 순위1, 순위2], rules);
-
-    expect(r.passed.map((x) => x.stockCode)).toEqual(["A", "B", "C"]);
-  });
-
-  it("결과 개수만큼만 자른다", () => {
+  it("결과 개수는 자르지 않는다 — 정렬·자르기는 상위 조합 계층의 몫이다", () => {
     const items = Array.from({ length: 5 }, (_, i) =>
       item({ stockCode: String(i), rank: i + 1 }),
     );
 
     const r = applyRules(items, { ...rules, resultCount: 2 });
 
-    expect(r.passed).toHaveLength(2);
+    expect(r.matched).toHaveLength(5);
     expect(r.population).toBe(5);
   });
 
-  it("빈 입력이면 통과 목록과 모집단 모두 0이다", () => {
+  it("빈 입력이면 일치 목록과 모집단 모두 0이다", () => {
     const r = applyRules([], rules);
 
-    expect(r).toEqual({ population: 0, passed: [] });
+    expect(r).toEqual({ population: 0, matched: [] });
+  });
+});
+
+describe("capResults", () => {
+  it("정해진 개수만큼만 남긴다", () => {
+    expect(capResults([1, 2, 3, 4, 5], 2)).toEqual([1, 2]);
+  });
+
+  it("개수가 전체보다 크면 있는 만큼만 준다", () => {
+    expect(capResults([1, 2], 10)).toEqual([1, 2]);
+  });
+
+  it("원본 배열을 바꾸지 않는다", () => {
+    const items = [1, 2, 3];
+    capResults(items, 1);
+    expect(items).toEqual([1, 2, 3]);
   });
 });
 

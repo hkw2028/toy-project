@@ -7,18 +7,19 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { SortableHeader } from "@/components/screener/sortable-header";
 import { StockCard } from "@/components/screener/stock-card";
 import { StockRow } from "@/components/screener/stock-row";
-import type { RankedItem } from "@/lib/screen/rules";
+import type { RawSearchParams, RankedItem } from "@/lib/screen/rules";
 
-export function ResultsTable({ items }: { items: RankedItem[] }) {
+export function ResultsTable({
+  items,
+  searchParams,
+}: {
+  items: RankedItem[];
+  searchParams: RawSearchParams;
+}) {
   if (items.length === 0) {
     return (
       <Empty className="border">
@@ -43,15 +44,49 @@ export function ResultsTable({ items }: { items: RankedItem[] }) {
           <TableHeader>
             <TableRow>
               <TableHead />
-              <TableHead>종목명</TableHead>
-              <TableHead>시장</TableHead>
-              <TableHead>시가총액</TableHead>
-              <TableHead>EV/EBIT</TableHead>
-              <TableHead>ROIC</TableHead>
-              <TableHead>FCF Yield</TableHead>
-              <TableHead>PER</TableHead>
-              <TableHead>PBR</TableHead>
-              <TableHead>Altman Z 백분위</TableHead>
+              <SortableHeader label="종목명" sortKey="name" searchParams={searchParams} />
+              <SortableHeader label="시장" sortKey="market" searchParams={searchParams} />
+              <SortableHeader
+                label="시가총액"
+                sortKey="marketCap"
+                searchParams={searchParams}
+              />
+              <SortableHeader
+                label="EV/EBIT"
+                sortKey="evToEbit"
+                metric="evToEbit"
+                searchParams={searchParams}
+              />
+              <SortableHeader
+                label="ROIC"
+                sortKey="roic"
+                metric="roic"
+                searchParams={searchParams}
+              />
+              <SortableHeader
+                label="FCF Yield"
+                sortKey="fcfYield"
+                metric="fcfYield"
+                searchParams={searchParams}
+              />
+              <SortableHeader
+                label="PER"
+                sortKey="per"
+                metric="per"
+                searchParams={searchParams}
+              />
+              <SortableHeader
+                label="PBR"
+                sortKey="pbr"
+                metric="pbr"
+                searchParams={searchParams}
+              />
+              <SortableHeader
+                label="Altman Z 백분위"
+                sortKey="altmanZ"
+                metric="altmanZ"
+                searchParams={searchParams}
+              />
             </TableRow>
           </TableHeader>
           <TableBody>

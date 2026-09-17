@@ -11,7 +11,13 @@ import {
 import { RuleForm } from "@/components/screener/rule-form";
 import { ResultsTable } from "@/components/screener/results-table";
 import { formatBasDt } from "@/lib/format";
-import { applyRules, parseRules, summarizeExclusions } from "@/lib/screen/rules";
+import {
+  applyRules,
+  capResults,
+  parseRules,
+  summarizeExclusions,
+} from "@/lib/screen/rules";
+import { parseSort, sortItems } from "@/lib/screen/sort";
 import { loadLatestSnapshot } from "@/lib/universe/load";
 
 export default async function Home({ searchParams }: PageProps<"/">) {
@@ -39,8 +45,11 @@ export default async function Home({ searchParams }: PageProps<"/">) {
     );
   }
 
-  const rules = parseRules(await searchParams);
-  const { population, passed } = applyRules(snapshot.items, rules);
+  const rawSearchParams = await searchParams;
+  const rules = parseRules(rawSearchParams);
+  const sort = parseSort(rawSearchParams);
+  const { population, matched } = applyRules(snapshot.items, rules);
+  const passed = capResults(sortItems(matched, sort), rules.resultCount);
   const exclusions = summarizeExclusions(snapshot.items);
   const excludedTotal = Object.values(exclusions).reduce((a, b) => a + b, 0);
 
@@ -91,7 +100,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
         )}
       </div>
 
-      <ResultsTable items={passed} />
+      <ResultsTable items={passed} searchParams={rawSearchParams} />
     </main>
   );
 }

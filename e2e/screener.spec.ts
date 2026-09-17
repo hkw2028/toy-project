@@ -74,3 +74,50 @@ test("종목 하나를 펼치면 상세 지표가 보이고, 다시 누르면 �
   await page.getByRole("button", { name: /상세 지표 닫기/ }).first().click();
   await expect(page.getByText("실효법인세율")).toHaveCount(0);
 });
+
+async function marketCaps(page: import("@playwright/test").Page) {
+  return page.locator("table tbody tr[data-market-cap]").evaluateAll((rows) =>
+    rows.map((r) => Number(r.getAttribute("data-market-cap"))),
+  );
+}
+
+test("기본 정렬은 시가총액 내림차순이다", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+
+  const caps = await marketCaps(page);
+  expect(caps.length).toBeGreaterThan(1);
+  expect(caps).toEqual([...caps].sort((a, b) => b - a));
+});
+
+test("열 헤더를 누르면 그 기준으로 정렬되고, 다시 누르면 방향이 뒤집힌다", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+
+  const perHeader = page.getByRole("link", { name: /^PER/ });
+  await perHeader.click();
+  await expect(page).toHaveURL(/sort=per&dir=desc/);
+  const perDesc = await page
+    .locator("table tbody tr[data-per]")
+    .evaluateAll((rows) => rows.map((r) => Number(r.getAttribute("data-per"))));
+  expect(perDesc).toEqual([...perDesc].sort((a, b) => b - a));
+
+  await page.getByRole("link", { name: /^PER/ }).click();
+  await expect(page).toHaveURL(/sort=per&dir=asc/);
+  const perAsc = await page
+    .locator("table tbody tr[data-per]")
+    .evaluateAll((rows) => rows.map((r) => Number(r.getAttribute("data-per"))));
+  expect(perAsc).toEqual([...perAsc].sort((a, b) => a - b));
+});
+
+test("헤더의 설명 아이콘에 마우스를 올리면 지표 설명이 보인다", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "EV/EBIT 설명" }).hover();
+  await expect(page.getByText(/순부채 근사/)).toBeVisible();
+});

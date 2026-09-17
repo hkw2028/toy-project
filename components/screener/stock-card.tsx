@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { detailMetrics } from "@/components/screener/detail-metrics";
 import { FlagBadges } from "@/components/screener/flag-badges";
+import { MetricStat } from "@/components/screener/metric-stat";
 import {
   formatDartBasis,
   formatFscBasis,
@@ -54,30 +55,15 @@ export function StockCard({ item }: { item: RankedItem }) {
       </CardHeader>
       <CardContent>
         <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-          <div>
-            <dt className="text-xs text-muted-foreground">EV/EBIT</dt>
-            <dd>{formatMultiple(item.evToEbit)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted-foreground">ROIC</dt>
-            <dd>{formatPercent(item.roic)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted-foreground">FCF Yield</dt>
-            <dd>{formatPercent(item.fcfYield)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted-foreground">PER</dt>
-            <dd>{formatMultiple(item.per)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted-foreground">PBR</dt>
-            <dd>{formatMultiple(item.pbr)}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-muted-foreground">Altman Z 백분위</dt>
-            <dd>{formatPercentile(item.percentile.altmanZ)}</dd>
-          </div>
+          <MetricStat metric="evToEbit" value={formatMultiple(item.evToEbit)} />
+          <MetricStat metric="roic" value={formatPercent(item.roic)} />
+          <MetricStat metric="fcfYield" value={formatPercent(item.fcfYield)} />
+          <MetricStat metric="per" value={formatMultiple(item.per)} />
+          <MetricStat metric="pbr" value={formatMultiple(item.pbr)} />
+          <MetricStat
+            metric="altmanZ"
+            value={formatPercentile(item.percentile.altmanZ)}
+          />
         </dl>
 
         <FlagBadges flags={item.flags} />
@@ -86,10 +72,7 @@ export function StockCard({ item }: { item: RankedItem }) {
           <>
             <dl className="grid grid-cols-2 gap-x-4 gap-y-2 border-t pt-3 text-sm">
               {detailMetrics(item).map((m) => (
-                <div key={m.label}>
-                  <dt className="text-xs text-muted-foreground">{m.label}</dt>
-                  <dd>{m.value}</dd>
-                </div>
+                <MetricStat key={m.metric} metric={m.metric} value={m.value} />
               ))}
             </dl>
             <p className="text-xs text-muted-foreground">

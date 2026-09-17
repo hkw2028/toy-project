@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { detailMetrics } from "@/components/screener/detail-metrics";
 import { FlagBadges } from "@/components/screener/flag-badges";
+import { MetricStat } from "@/components/screener/metric-stat";
 import {
   formatDartBasis,
   formatFscBasis,
@@ -22,13 +23,18 @@ import type { RankedItem } from "@/lib/screen/rules";
 // 늘려야 한다.
 const DETAIL_COLUMN_COUNT = 9;
 
-/** 결과 표의 종목 한 줄. 펼치면 바로 아래 줄에 상세 지표가 나온다. */
+/**
+ * 결과 표의 종목 한 줄. 펼치면 바로 아래 줄에 상세 지표가 나온다.
+ *
+ * `data-market-cap`/`data-per`는 화면 표시용이 아니라, E2E에서 통화·배율
+ * 표기를 다시 파싱하지 않고 정렬 순서를 검증하기 위한 원시값이다.
+ */
 export function StockRow({ item }: { item: RankedItem }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <TableRow>
+      <TableRow data-market-cap={item.marketCap} data-per={item.per}>
         <TableCell>
           <Button
             variant="ghost"
@@ -66,10 +72,7 @@ export function StockRow({ item }: { item: RankedItem }) {
           <TableCell colSpan={DETAIL_COLUMN_COUNT}>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-2 py-2 sm:grid-cols-4">
               {detailMetrics(item).map((m) => (
-                <div key={m.label}>
-                  <dt className="text-xs text-muted-foreground">{m.label}</dt>
-                  <dd>{m.value}</dd>
-                </div>
+                <MetricStat key={m.metric} metric={m.metric} value={m.value} />
               ))}
             </dl>
             <p className="text-xs text-muted-foreground">

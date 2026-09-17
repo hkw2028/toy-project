@@ -107,12 +107,18 @@ function isRanked(item: SnapshotItem): item is RankedItem {
 export type ScreenResult = {
   /** 규칙을 적용하기 전, 지표가 계산된 전 종목 수. */
   population: number;
-  /** 규칙을 통과해 실제로 보여줄 종목. */
-  passed: RankedItem[];
+  /**
+   * 규칙을 통과한 종목. 정렬돼 있지 않다.
+   *
+   * 어떤 차례로 보여줄지와 몇 개까지 보여줄지는 이 함수의 관심사가 아니다.
+   * 정렬(`lib/screen/sort.ts`)은 같은 급의 별개 모듈이라 서로 모르며,
+   * 조합은 상위(화면)에서 한다.
+   */
+  matched: RankedItem[];
 };
 
 /**
- * 전 종목에 규칙을 적용해 통과 종목을 순위순으로 자른다.
+ * 전 종목에 규칙을 적용해 통과 종목을 고른다.
  *
  * 지표가 계산되지 않은(percentile이 없는) 종목은 모집단에서도 제외한다.
  * 규칙으로 거르는 대상은 이미 순위가 매겨진 종목뿐이다.
@@ -123,18 +129,20 @@ export function applyRules(
 ): ScreenResult {
   const ranked = items.filter(isRanked);
 
-  const passed = ranked
-    .filter(
-      (item) =>
-        item.percentile.evToEbit <= rules.evEbitMaxPercentile &&
-        item.percentile.roic >= rules.roicMinPercentile &&
-        item.percentile.fcfYield >= rules.fcfYieldMinPercentile &&
-        item.percentile.altmanZ >= rules.altmanZMinPercentile,
-    )
-    .sort((a, b) => a.rank - b.rank)
-    .slice(0, rules.resultCount);
+  const matched = ranked.filter(
+    (item) =>
+      item.percentile.evToEbit <= rules.evEbitMaxPercentile &&
+      item.percentile.roic >= rules.roicMinPercentile &&
+      item.percentile.fcfYield >= rules.fcfYieldMinPercentile &&
+      item.percentile.altmanZ >= rules.altmanZMinPercentile,
+  );
 
-  return { population: ranked.length, passed };
+  return { population: ranked.length, matched };
+}
+
+/** 정렬된 결과 중 화면에 보여줄 만큼만 남긴다. */
+export function capResults<T>(items: T[], resultCount: number): T[] {
+  return items.slice(0, resultCount);
 }
 
 /**
