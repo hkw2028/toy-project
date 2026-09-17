@@ -18,7 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "국내 상장종목 스크리너",
-  description: "규칙에 따라 국내 상장종목을 걸러 순위로 보여주는 스크리너",
+  description:
+    "규칙에 따라 국내 상장종목을 걸러 순위로 보여주는 스크리너와 기업별 재무 추이를 비교하는 화면",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
