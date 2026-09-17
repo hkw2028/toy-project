@@ -17,7 +17,10 @@ import {
 } from "@/lib/format";
 import type { RankedItem } from "@/lib/screen/rules";
 
-const DETAIL_COLUMN_COUNT = 8;
+// 토글용 빈 칸 하나를 제외한 나머지 아홉 개 열(종목명~Altman Z 백분위)을
+// 이 값으로 합쳐 펼침·경고 줄이 표 끝까지 닿게 한다. 헤더 열이 늘면 같이
+// 늘려야 한다.
+const DETAIL_COLUMN_COUNT = 9;
 
 /** 결과 표의 종목 한 줄. 펼치면 바로 아래 줄에 상세 지표가 나온다. */
 export function StockRow({ item }: { item: RankedItem }) {

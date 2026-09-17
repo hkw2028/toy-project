@@ -77,8 +77,8 @@ export default async function Home({ searchParams }: PageProps<"/">) {
           을 보여줍니다.
         </p>
         <p>
-          순위는 EV/EBIT 백분위(낮을수록 저평가)와 ROIC 백분위(높을수록 자본
-          효율이 좋음)를 더한 값이 낮은 순입니다. 규칙을 바꿔도 이미 매겨진
+          순위는 전 종목 중 EV/EBIT이 쌀수록 앞서는 순위와 ROIC이 높을수록
+          앞서는 순위를 더한 값이 낮은 순입니다. 규칙을 바꿔도 이미 매겨진
           순위와 백분위 자체는 바뀌지 않습니다.
         </p>
         {excludedTotal > 0 && (
