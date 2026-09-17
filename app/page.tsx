@@ -1,69 +1,97 @@
-import Image from "next/image";
+import { FolderSearch } from "lucide-react";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { RuleForm } from "@/components/screener/rule-form";
+import { ResultsTable } from "@/components/screener/results-table";
+import { formatBasDt } from "@/lib/format";
+import { applyRules, parseRules, summarizeExclusions } from "@/lib/screen/rules";
+import { loadLatestSnapshot } from "@/lib/universe/load";
+
+export default async function Home({ searchParams }: PageProps<"/">) {
+  const snapshot = await loadLatestSnapshot();
+
+  if (!snapshot) {
+    return (
+      <main className="mx-auto flex w-full max-w-3xl flex-1 items-center px-4 py-16">
+        <Empty className="w-full border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <FolderSearch />
+            </EmptyMedia>
+            <EmptyTitle>스냅샷이 없습니다</EmptyTitle>
+            <EmptyDescription>
+              아직 지표 스냅샷을 만들지 않았습니다. 터미널에서{" "}
+              <code className="rounded bg-muted px-1 py-0.5">
+                bun run universe
+              </code>
+              를 실행해 만들어 주세요.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       </main>
-    </div>
+    );
+  }
+
+  const rules = parseRules(await searchParams);
+  const { population, passed } = applyRules(snapshot.items, rules);
+  const exclusions = summarizeExclusions(snapshot.items);
+  const excludedTotal = Object.values(exclusions).reduce((a, b) => a + b, 0);
+
+  return (
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-8">
+      <header className="flex flex-col gap-1">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          국내 상장종목 스크리너
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          재무 기준 사업연도 {snapshot.bizYear} · 시세 기준일{" "}
+          {formatBasDt(snapshot.priceBasDt)} · 상장 목록 기준일{" "}
+          {formatBasDt(snapshot.listedBasDt)}
+        </p>
+      </header>
+
+      <Alert>
+        <AlertTitle>이 화면은 계산 결과이지 투자 자문이 아닙니다</AlertTitle>
+        <AlertDescription>
+          아래 규칙에 따라 걸러낸 결과를 보여줄 뿐, 특정 종목의 매수를
+          권유하거나 비중 배분을 제시하지 않습니다. 순부채 근사, Altman Z
+          백분위 등 지표의 한계는 각 항목의 정의를 참고하세요.
+        </AlertDescription>
+      </Alert>
+
+      <RuleForm rules={rules} />
+
+      <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+        <p>
+          모집단 {population.toLocaleString("ko-KR")}종목 중 규칙을 통과한{" "}
+          <span className="font-medium text-foreground">
+            {passed.length.toLocaleString("ko-KR")}종목
+          </span>
+          을 보여줍니다.
+        </p>
+        <p>
+          순위는 EV/EBIT 백분위(낮을수록 저평가)와 ROIC 백분위(높을수록 자본
+          효율이 좋음)를 더한 값이 낮은 순입니다. 규칙을 바꿔도 이미 매겨진
+          순위와 백분위 자체는 바뀌지 않습니다.
+        </p>
+        {excludedTotal > 0 && (
+          <p>
+            순위 대상에서 빠진 {excludedTotal.toLocaleString("ko-KR")}종목:{" "}
+            {Object.entries(exclusions)
+              .map(([reason, count]) => `${reason} ${count.toLocaleString("ko-KR")}건`)
+              .join(", ")}
+          </p>
+        )}
+      </div>
+
+      <ResultsTable items={passed} />
+    </main>
   );
 }
