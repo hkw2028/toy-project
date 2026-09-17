@@ -1,4 +1,4 @@
-import { SearchX } from "lucide-react";
+import { MagnifyingGlassMinusIcon } from "@phosphor-icons/react/ssr";
 
 import {
   Empty,
@@ -25,7 +25,7 @@ export function ResultsTable({
       <Empty className="border">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <SearchX />
+            <MagnifyingGlassMinusIcon />
           </EmptyMedia>
           <EmptyTitle>통과한 종목이 없습니다</EmptyTitle>
           <EmptyDescription>

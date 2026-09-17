@@ -1,4 +1,4 @@
-import { Info } from "lucide-react";
+import { InfoIcon } from "@phosphor-icons/react/ssr";
 
 import {
   Tooltip,
@@ -17,7 +17,7 @@ export function MetricInfoIcon({ metric }: { metric: MetricKey }) {
         aria-label={`${info.label} 설명`}
         className="inline-flex align-middle text-muted-foreground hover:text-foreground"
       >
-        <Info className="size-3" />
+        <InfoIcon className="size-3" />
       </TooltipTrigger>
       <TooltipContent>{info.description}</TooltipContent>
     </Tooltip>

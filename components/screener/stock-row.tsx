@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { CaretDownIcon, CaretRightIcon } from "@phosphor-icons/react";
 
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -43,7 +43,7 @@ export function StockRow({ item }: { item: RankedItem }) {
             aria-label={`${item.name} 상세 지표 ${open ? "닫기" : "펼치기"}`}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <ChevronDown /> : <ChevronRight />}
+            {open ? <CaretDownIcon /> : <CaretRightIcon />}
           </Button>
         </TableCell>
         <TableCell className="font-medium" data-testid="stock-name">

@@ -1,4 +1,4 @@
-import { FolderSearch } from "lucide-react";
+import { FolderOpenIcon } from "@phosphor-icons/react/ssr";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -39,7 +39,7 @@ export async function ScreenerPanel({
       <Empty className="w-full border">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <FolderSearch />
+            <FolderOpenIcon />
           </EmptyMedia>
           <EmptyTitle>스냅샷이 없습니다</EmptyTitle>
           <EmptyDescription>

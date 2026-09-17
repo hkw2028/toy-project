@@ -1,4 +1,4 @@
-import { FileSearch } from "lucide-react";
+import { FileMagnifyingGlassIcon } from "@phosphor-icons/react/ssr";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -43,7 +43,7 @@ export async function ComparePanel({
         <Empty className="w-full border">
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <FileSearch />
+              <FileMagnifyingGlassIcon />
             </EmptyMedia>
             <EmptyTitle>인증키가 없습니다</EmptyTitle>
             <EmptyDescription>{e.message}</EmptyDescription>
@@ -90,7 +90,7 @@ export async function ComparePanel({
         <Empty className="border">
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <FileSearch />
+              <FileMagnifyingGlassIcon />
             </EmptyMedia>
             <EmptyTitle>바구니가 비어 있습니다</EmptyTitle>
             <EmptyDescription>

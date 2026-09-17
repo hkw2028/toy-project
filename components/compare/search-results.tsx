@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SearchX } from "lucide-react";
+import { MagnifyingGlassMinusIcon } from "@phosphor-icons/react/ssr";
 
 import {
   Empty,
@@ -34,7 +34,7 @@ export function SearchResults({
       <Empty className="border">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <SearchX />
+            <MagnifyingGlassMinusIcon />
           </EmptyMedia>
           <EmptyTitle>검색 결과가 없습니다</EmptyTitle>
           <EmptyDescription>다른 검색어로 다시 시도해 보세요.</EmptyDescription>

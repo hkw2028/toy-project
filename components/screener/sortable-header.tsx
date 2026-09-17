@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 
 import { TableHead } from "@/components/ui/table";
@@ -37,9 +37,9 @@ export function SortableHeader({
           {label}
           {active &&
             (current.direction === "asc" ? (
-              <ArrowUp className="size-3" />
+              <ArrowUpIcon className="size-3" />
             ) : (
-              <ArrowDown className="size-3" />
+              <ArrowDownIcon className="size-3" />
             ))}
         </Link>
         {metric && <MetricInfoIcon metric={metric} />}

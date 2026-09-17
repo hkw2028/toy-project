@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { XIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -71,7 +71,7 @@ export function FinancialTable({
               <Link href={removeFromBasketHref(searchParams, company.crno)} />
             }
           >
-            <X />
+            <XIcon />
           </Button>
         </CardAction>
       </CardHeader>
@@ -127,7 +127,7 @@ export function FinancialTableError({
               <Link href={removeFromBasketHref(searchParams, company.crno)} />
             }
           >
-            <X />
+            <XIcon />
           </Button>
         </CardAction>
       </CardHeader>
