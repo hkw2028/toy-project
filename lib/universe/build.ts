@@ -387,7 +387,13 @@ function toSnapshotItem(input: {
       ? pbr(marketCap, equityOfParent)
       : null,
     evToEbit: evToEbit(ev, ebit),
-    roic: roic(ebit, taxRate ?? 0.22, investedCapital(totalAssets, currentLiabilities)),
+    // 세전이익이 0 이하라 실효세율이 없으면 임의의 세율을 가정하지 않고
+    // ROIC도 함께 null로 둔다. 스펙은 실효세율을 그대로 세율로 쓴다고만
+    // 정의했을 뿐, 세율을 구할 수 없을 때의 대체값을 정하지 않았다.
+    roic:
+      taxRate !== null
+        ? roic(ebit, taxRate, investedCapital(totalAssets, currentLiabilities))
+        : null,
     fcfYield: fcf !== null ? fcfYield(fcf, marketCap) : null,
     accrualRatio:
       ocf !== null && ocf !== undefined
@@ -424,6 +430,9 @@ function toSnapshotItem(input: {
  * 뿐이므로 규칙을 바꿔도 종목의 자리가 흔들리지 않는다.
  */
 function assignPercentilesAndRanks(rows: SnapshotItem[]): void {
+  // "지표 완성"은 11개 지표(DuPont의 세 값을 하나로 묶어) 전부가 계산된
+  // 경우만 뜻한다. 백분위·순위에 쓰는 값만 확인하면 실효법인세율이나
+  // DuPont처럼 화면에 펼쳐서 보여줄 값이 빠진 종목도 완성으로 잘못 집계된다.
   const complete = rows.filter(
     (r) =>
       r.evToEbit !== null &&
@@ -431,7 +440,14 @@ function assignPercentilesAndRanks(rows: SnapshotItem[]): void {
       r.fcfYield !== null &&
       r.altmanZ !== null &&
       r.per !== null &&
-      r.pbr !== null,
+      r.pbr !== null &&
+      r.effectiveTaxRate !== null &&
+      r.accrualRatio !== null &&
+      r.earningsQuality !== null &&
+      r.ncavMultiple !== null &&
+      r.netMargin !== null &&
+      r.assetTurnover !== null &&
+      r.leverage !== null,
   );
 
   const isComplete = new Set(complete);
